@@ -8,14 +8,32 @@ import {
   Delete,
   Query,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { query } from 'express';
 import { FilterPopularMoviesDto } from './dto/filter-popular-movies.dto';
+import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@UseGuards(ApiKeyGuard)
+@ApiTags('Movies')
+@ApiSecurity('x-api-key')
 @Controller('movies')
+@ApiHeader({
+  name: 'x-api-key',
+  description: 'please ask admin to retreive it',
+  required: true,
+  schema: {
+    type: 'string',
+  },
+})
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
@@ -50,7 +68,10 @@ export class MoviesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ) {
     return this.moviesService.update(+id, updateMovieDto);
   }
 

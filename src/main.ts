@@ -24,7 +24,6 @@ async function bootstrap() {
       .setTitle('TMDP Test')
       .setDescription('The TMDP API description for the test')
       .setVersion('1.0')
-      .addTag('api')
       .build();
     const documentFactory = () => SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-docs', app, documentFactory);
@@ -36,7 +35,9 @@ async function bootstrap() {
 
   await app.listen(port, () => {
     const logger = new Logger('Bootstrap');
-    logger.log(`Application is running on: http://localhost:${port}`);
+    logger.log(`Application is running on: http://localhost:${port}/api`);
+    // swagger endpoint
+    logger.log(`Swagger endpoint: http://localhost:${port}/api-docs`);
   });
 }
 bootstrap();

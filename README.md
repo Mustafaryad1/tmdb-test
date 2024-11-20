@@ -1,73 +1,141 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# TMDB CRUD Application
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This project is a CRUD application built with [NestJS](https://nestjs.com/) that interacts with [The Movie Database (TMDB)](https://www.themoviedb.org/) API, utilizing Prisma ORM for database operations. The app can be run locally or via Docker Compose.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
 
-## Installation
+Ensure the following tools are installed for manual installation:
 
-```bash
-$ npm install
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [PostgreSQL](https://www.postgresql.org/) (for local development)
+---
+
+Or using Docker 
+- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
+
+
+## Environment Variables
+
+Create a `.env` file in the root of the project with the following contents:
+
+```env
+# Port
+PORT=8080
+
+# TMDB API
+TMDB_API_KEY=your_tmdb_api_key
+TMDP_BASE_URL=https://api.themoviedb.org/3
+
+# Database
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB=tmdb
+POSTGRES_PORT=5432
+DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/${POSTGRES_DB}
+
+# X-API-KEY
+X_API_KEY=your_x_api_key // To access protected endpoints
 ```
 
-## Running the app
+---
 
-```bash
-# development
-$ npm run start
+## Running Locally
 
-# watch mode
-$ npm run start:dev
+1. **Install Dependencies**
 
-# production mode
-$ npm run start:prod
+   ```bash
+   npm install
+   ```
+
+2. **Start PostgreSQL**
+
+   Ensure PostgreSQL is running locally. Update `.env` with your local database credentials if different.
+
+3. **Run Prisma Migrations**
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+4. **Start the Application**
+
+   ```bash
+   npm run start:dev
+   ```
+
+5. The application will be available at `http://localhost:8080`.
+
+---
+
+## Running with Docker Compose
+
+1. **Set up the `.env` file**
+
+   Ensure the `.env` file has the correct `DATABASE_URL` for the Docker Compose setup:
+
+   ```env
+   DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:5432/${POSTGRES_DB}
+   ```
+
+2. **Build and Start Services**
+
+   ```bash
+   docker-compose up --build
+   ```
+
+3. **Access the Application**
+
+   - App: `http://localhost:8080`
+   - PostgreSQL will run inside the container.
+
+
+## Project Structure
+
+```
+prisma/
+src/
+├── app.module.ts         # Root module
+├── main.ts               # Entry point
+└── movies/               # movies module
+└── common/               # common module
+
 ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ npm run test
+## Useful Commands
 
-# e2e tests
-$ npm run test:e2e
+### Prisma
 
-# test coverage
-$ npm run test:cov
-```
+- **Generate Prisma Client**: `npx prisma generate`
+- **Apply Migrations**: `npx prisma migrate dev`
+- **Access Database (via Prisma Studio)**: `npx prisma studio`
 
-## Support
+### Docker
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Stop and Remove Containers**: `docker-compose down`
+- **Rebuild and Restart Containers**: `docker-compose up --build`
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## API Endpoints
+
+The application exposes CRUD operations for interacting with movies. Authentication is required via `X-API-KEY`.
+
+- **Base URL**: `http://localhost:8080`
+
+Example Endpoints:
+
+- `GET /movies` - Fetch all movies
+- `POST /movies` - Add a new movie
+- `PUT /movies/:id` - Update a movie
+- `DELETE /movies/:id` - Delete a movie
+
+---
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+MIT License

@@ -29,7 +29,7 @@ export class MoviesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.moviesService.findOne(+id);
   }
 

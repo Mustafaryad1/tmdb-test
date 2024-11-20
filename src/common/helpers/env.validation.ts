@@ -4,8 +4,8 @@ export function validateEnv() {
   const requiredEnvVars = [
     'TMDB_API_KEY',
     'TMDP_BASE_URL',
-    'TMDP_READ_ACCESS_TOKEN',
     'DATABASE_URL',
+    'X_API_KEY',
   ];
   const missingVars = requiredEnvVars.filter((env) => !process.env[env]);
 

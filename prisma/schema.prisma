@@ -7,9 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Movie {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  releaseDate DateTime
+  rating      Float
+  tmdbId      Int      @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -4,5 +4,6 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-CMD ["node", "dist/main"]
+RUN npx prisma generate
 EXPOSE 8080
+CMD [  "npm", "run", "start:migrate:prod" ]

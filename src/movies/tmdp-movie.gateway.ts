@@ -44,7 +44,6 @@ export class TMDPMovieGateway implements OnModuleInit {
   async getMovies(query: FilterPopularMoviesDto): Promise<any> {
     const url = `${this.baseUrl}/discover/movie`;
     const filters = { page: query.page };
-    console.log('called');
     filterMovieHelper(query, filters, this.genres);
 
     try {
@@ -70,5 +69,12 @@ export class TMDPMovieGateway implements OnModuleInit {
     } catch (error) {
       throw new BadRequestException(`error at tmdp gateway: ${error.message}`);
     }
+  }
+
+  convertGenresIdsToNames(genreIds: number[]): string[] {
+    return genreIds.map((genreId) => {
+      const genre = this.genres.genres.find((g) => g.id === genreId);
+      return genre.name;
+    });
   }
 }

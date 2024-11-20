@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
+import { TMDPMovieGateway } from './tmdp-movie.gateway';
 
 @Injectable()
 export class MoviesService {
+  constructor(private readonly tmdpMovieGateway: TMDPMovieGateway) {}
+
   create(createMovieDto: CreateMovieDto) {
     return 'This action adds a new movie';
   }
 
-  findAll() {
-    return `This action returns all movies`;
+  async findAll() {
+    return this.tmdpMovieGateway.getMovies();
   }
 
   findOne(id: number) {

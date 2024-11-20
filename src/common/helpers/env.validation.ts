@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 export function validateEnv() {
   const requiredEnvVars = [
     'TMDB_API_KEY',
-    'TMDB_API_URL',
+    'TMDP_BASE_URL',
     'TMDP_READ_ACCESS_TOKEN',
     'DATABASE_URL',
   ];

@@ -3,6 +3,7 @@ import { MoviesService } from './movies.service';
 import { MoviesController } from './movies.controller';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TMDPMovieGateway } from './tmdp-movie.gateway';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [MoviesController],
-  providers: [MoviesService],
+  providers: [MoviesService, TMDPMovieGateway],
 })
 export class MoviesModule {}

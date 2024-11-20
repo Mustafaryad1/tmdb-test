@@ -13,7 +13,7 @@ export class MoviesController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.moviesService.findAll();
   }
 
